@@ -1,0 +1,188 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cyber Hero</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+        /* BACKGROUND VIDEO */
+        .background-home {
+            position: fixed;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -2;
+            pointer-events: none;
+        }
+
+        /* LAPISAN GELAP */
+        .overlay-home {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 15, 35, 0.48);
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        /* HEADER DAN KONTEN */
+        .header {
+            position: relative;
+            z-index: 100;
+        }
+
+        .home {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* JUDUL BERADA DI BELAKANG MENU */
+        .home h1 {
+            position: relative;
+            z-index: 0;
+        }
+
+        /* PANEL HAMBURGER SELALU DI ATAS JUDUL */
+        .menu-panel {
+            position: absolute;
+            z-index: 200;
+        }
+
+        .menu {
+            position: relative;
+            z-index: 201;
+        }
+
+        /* KOTAK DESKRIPSI */
+        .deskripsi-home {
+            max-width: 800px;
+            width: 90%;
+            margin: 25px auto 18px;
+            padding: 20px 35px;
+            background: rgba(0, 20, 45, 0.88);
+            border: 1px solid rgba(0, 190, 255, 0.55);
+            border-radius: 17px;
+            color: #ffffff;
+            font-size: 15px;
+            line-height: 1.8;
+            text-align: center;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        @media (max-width: 600px) {
+            .deskripsi-home {
+                width: 95%;
+                padding: 20px;
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- BACKGROUND VIDEO -->
+    <video class="background-home" autoplay muted loop playsinline>
+        <source src="media/background-home.mp4" type="video/mp4">
+    </video>
+
+    <!-- LAPISAN GELAP -->
+    <div class="overlay-home"></div>
+
+    <!-- HEADER -->
+    <header class="header">
+
+        <div class="brand">
+            <img
+                src="assets/logo-cyber-hero.png"
+                alt="Logo Cyber Hero"
+                class="logo"
+            >
+            <span>Jadilah Cyber hero!</span>
+        </div>
+
+        <button
+            class="menu"
+            id="menuToggle"
+            aria-label="Buka menu"
+            aria-expanded="false"
+            type="button"
+        >
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+
+        <!-- MENU HAMBURGER -->
+        <nav class="menu-panel" id="menuPanel">
+            <a href="index.html">Home</a>
+            <a href="pemandu.html">Pemandu Belajar</a>
+            <a href="capaian.html">Capaian Pembelajaran</a>
+            <a href="tujuan.html">Tujuan Pembelajaran</a>
+            <a href="materi.html">Materi</a>
+        </nav>
+
+    </header>
+
+    <!-- HALAMAN UTAMA -->
+    <main class="home">
+
+        <h1>Cyber Hero</h1>
+
+        <p class="deskripsi-home">
+            Cyber Hero hadir sebagai media pembelajaran interaktif untuk mengenal keamanan digital.
+            Melalui berbagai materi, video, dan kuis, kamu akan diajak memahami ancaman di internet
+            serta cara menjaga keamanan diri saat beraktivitas di dunia digital.
+
+            Mari belajar menjadi pengguna internet yang lebih cerdas, bijak, dan aman!
+        </p>
+
+        <a href="pemandu.html" class="btn-mulai">
+            Mulai
+        </a>
+
+    </main>
+
+    <!-- JAVASCRIPT MENU -->
+    <script>
+        const menuToggle = document.getElementById("menuToggle");
+        const menuPanel = document.getElementById("menuPanel");
+
+        menuToggle.addEventListener("click", function() {
+            menuPanel.classList.toggle("active");
+
+            const isOpen = menuPanel.classList.contains("active");
+
+            menuToggle.setAttribute("aria-expanded", isOpen);
+            menuToggle.setAttribute(
+                "aria-label",
+                isOpen ? "Tutup menu" : "Buka menu"
+            );
+        });
+
+        document.querySelectorAll(".menu-panel a").forEach(link => {
+            link.addEventListener("click", function() {
+                menuPanel.classList.remove("active");
+                menuToggle.setAttribute("aria-expanded", "false");
+                menuToggle.setAttribute("aria-label", "Buka menu");
+            });
+        });
+
+        document.addEventListener("click", function(event) {
+            if (
+                !menuToggle.contains(event.target) &&
+                !menuPanel.contains(event.target)
+            ) {
+                menuPanel.classList.remove("active");
+                menuToggle.setAttribute("aria-expanded", "false");
+                menuToggle.setAttribute("aria-label", "Buka menu");
+            }
+        });
+    </script>
+
+</body>
+</html>

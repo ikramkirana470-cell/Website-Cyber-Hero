@@ -1,0 +1,897 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kuis Cyber Hero</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+html, body {
+    width: 100%;
+    min-height: 100%;
+}
+
+body {
+    min-height: 100vh;
+    color: white;
+    background: #031b35;
+    overflow-x: hidden;
+}
+
+.background-video {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -2;
+}
+
+.overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 24, 48, 0.82);
+    z-index: -1;
+}
+
+.container {
+    width: 100%;
+    max-width: 1200px;
+    min-height: 100vh;
+    margin: auto;
+    padding: 35px 25px 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.header h1 {
+    font-size: clamp(30px, 3vw, 40px);
+    font-weight: 900;
+    letter-spacing: 2px;
+    line-height: 1.4;
+    text-shadow: 0 0 15px #00bfff;
+}
+
+.header p {
+    margin-top: 12px;
+    color: #d6efff;
+    font-size: 15px;
+    line-height: 1.7;
+}
+
+.quiz-box {
+    width: 100%;
+    max-width: 1050px;
+    margin: 0 auto;
+    background: rgba(240, 250, 255, 0.97);
+    color: #073b5c;
+    border: 1px solid rgba(0, 210, 255, 0.5);
+    border-radius: 18px;
+    padding: 20px 25px;
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.3);
+}
+
+.top-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 12px;
+    font-size: 14px;
+    font-weight: bold;
+    line-height: 1.6;
+    color: #075577;
+}
+
+.progress-bg {
+    height: 8px;
+    width: 100%;
+    background: #d9edf5;
+    border-radius: 20px;
+    overflow: hidden;
+    margin-bottom: 16px;
+}
+
+.progress-bar {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, #00b9d8, #087cff);
+    border-radius: 20px;
+    transition: 0.3s;
+}
+
+.question {
+    font-size: 17px;
+    font-weight: bold;
+    line-height: 1.6;
+    margin-bottom: 14px;
+    color: #003d60;
+}
+
+.options {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.option {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 9px 13px;
+    border: 1px solid #d5e9f1;
+    border-radius: 10px;
+    background: white;
+    cursor: pointer;
+    transition: 0.2s;
+    color: #315c75;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.option:hover {
+    border-color: #00b9d8;
+    background: #effbfe;
+}
+
+.option.selected {
+    border: 1px solid #00b9d8;
+    background: #e5f8fc;
+}
+
+.option input {
+    margin-top: 3px;
+    accent-color: #0098b9;
+    width: 17px;
+    height: 17px;
+    flex-shrink: 0;
+}
+
+.feedback {
+    display: none;
+    margin-top: 15px;
+    padding: 14px;
+    border-radius: 12px;
+    background: #eaf7fc;
+    border-left: 5px solid #0098b9;
+    color: #315c75;
+    line-height: 1.6;
+}
+
+.feedback.show {
+    display: block;
+}
+
+.navigation {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    margin-top: 18px;
+}
+
+.btn {
+    border: none;
+    padding: 11px 24px;
+    border-radius: 9px;
+    background: linear-gradient(90deg, #075577, #008da8);
+    color: white;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 185, 216, 0.3);
+}
+
+.btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.result {
+    display: none;
+    text-align: center;
+    padding: 20px 10px;
+}
+
+.result.show {
+    display: block;
+}
+
+.label {
+    display: inline-block;
+    padding: 9px 22px;
+    border: 1px solid #35d9ff;
+    border-radius: 30px;
+    color: #35d9ff;
+    background: rgba(0, 180, 230, 0.12);
+    font-size: 12px;
+    font-weight: bold;
+    letter-spacing: 3px;
+    margin-bottom: 15px;
+}
+
+.score-circle {
+    width: 130px;
+    height: 130px;
+    border-radius: 50%;
+    margin: 20px auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(135deg, #0098b9, #087cff);
+    color: white;
+    box-shadow: 0 8px 25px rgba(0, 150, 200, 0.3);
+}
+
+.score-circle span:first-child {
+    font-size: 40px;
+    font-weight: bold;
+}
+
+.score-circle span:last-child {
+    font-size: 13px;
+}
+
+.result h2 {
+    color: #003d60;
+    margin-bottom: 12px;
+}
+
+.result p {
+    color: #315c75;
+    line-height: 1.8;
+}
+
+.result-actions {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 20px;
+}
+
+.review {
+    display: none;
+    margin-top: 20px;
+}
+
+.review.show {
+    display: block;
+}
+
+.review h2 {
+    margin-bottom: 15px;
+    color: #003d60;
+}
+
+.review-item {
+    background: white;
+    border: 1px solid #d5e9f1;
+    border-radius: 12px;
+    padding: 14px;
+    margin-bottom: 10px;
+    text-align: left;
+    color: #315c75;
+    line-height: 1.7;
+}
+
+.review-item strong {
+    color: #003d60;
+}
+
+.review-item .right {
+    color: #159b62;
+    font-weight: bold;
+}
+
+.review-item .wrong-text {
+    color: #d94b4b;
+    font-weight: bold;
+}
+
+.home-navigation {
+    text-align: center;
+    margin-top: 30px;
+    margin-bottom: 5px;
+}
+
+.back-link {
+    display: inline-block;
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    background: rgba(0, 150, 190, 0.2);
+    border: 1px solid #35d9ff;
+    border-radius: 9px;
+    padding: 12px 25px;
+    font-size: 14px;
+    transition: 0.3s;
+}
+
+.back-link:hover {
+    background: rgba(0, 190, 220, 0.3);
+    transform: translateY(-2px);
+}
+
+/* LAYAR LAPTOP */
+@media (max-height: 750px) and (min-width: 769px) {
+    .container {
+        padding-top: 30px;
+        padding-bottom: 25px;
+    }
+
+    .header {
+        margin-bottom: 24px;
+    }
+
+    .quiz-box {
+        max-width: 1000px;
+        padding: 17px 22px;
+    }
+
+    .question {
+        font-size: 16px;
+        margin-bottom: 11px;
+    }
+
+    .option {
+        padding: 8px 12px;
+    }
+
+    .navigation {
+        margin-top: 15px;
+    }
+
+    .home-navigation {
+        margin-top: 25px;
+    }
+}
+
+/* TABLET DAN HP */
+@media (max-width: 768px) {
+    .container {
+        padding: 30px 15px;
+        justify-content: flex-start;
+    }
+
+    .header {
+        margin-bottom: 24px;
+    }
+
+    .header h1 {
+        font-size: 28px;
+    }
+
+    .header p {
+        font-size: 13px;
+    }
+
+    .quiz-box {
+        padding: 17px 14px;
+    }
+
+    .question {
+        font-size: 15px;
+    }
+
+    .option {
+        padding: 10px;
+        font-size: 13px;
+    }
+
+    .navigation {
+        gap: 10px;
+    }
+
+    .btn {
+        padding: 10px 14px;
+        font-size: 13px;
+    }
+
+    .home-navigation {
+        margin-top: 25px;
+    }
+}
+
+@media (max-width: 450px) {
+    .navigation {
+        flex-direction: column;
+    }
+
+    .navigation .btn {
+        width: 100%;
+    }
+
+    .top-info {
+        font-size: 12px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<video class="background-video" autoplay muted loop playsinline>
+    <source src="media/background-kuis.mp4" type="video/mp4">
+</video>
+
+<div class="overlay"></div>
+
+<main class="container">
+
+    <header class="header">
+        <h1>KUIS CYBER HERO</h1>
+        <p>Uji pemahamanmu tentang keamanan digital melalui 20 soal berikut!</p>
+    </header>
+
+    <section class="quiz-box" id="quizBox">
+
+        <div id="quizContent">
+            <div class="top-info">
+                <span id="questionNumber"></span>
+                <span id="answeredCount"></span>
+            </div>
+
+            <div class="progress-bg">
+                <div class="progress-bar" id="progressBar"></div>
+            </div>
+
+            <div class="question" id="questionText"></div>
+            <div class="options" id="optionsContainer"></div>
+            <div class="feedback" id="feedback"></div>
+
+            <div class="navigation">
+                <button class="btn" id="prevBtn" onclick="previousQuestion()">← Sebelumnya</button>
+                <button class="btn" id="nextBtn" onclick="nextQuestion()">Selanjutnya →</button>
+            </div>
+        </div>
+
+        <div class="result" id="result">
+            <div class="label">HASIL KUIS</div>
+            <h2>Kuis Telah Selesai!</h2>
+
+            <div class="score-circle">
+                <span id="finalScore">0</span>
+                <span>Nilai Kamu</span>
+            </div>
+
+            <p id="resultDescription"></p>
+
+            <div class="result-actions">
+                <button class="btn" onclick="showReview()">Lihat Pembahasan</button>
+                <button class="btn" onclick="restartQuiz()">Ulangi Kuis</button>
+            </div>
+        </div>
+
+        <div class="review" id="review">
+            <h2>Pembahasan Seluruh Soal</h2>
+            <div id="reviewContent"></div>
+
+            <div class="result-actions">
+                <button class="btn" onclick="hideReview()">Kembali ke Hasil</button>
+                <button class="btn" onclick="restartQuiz()">Ulangi Kuis</button>
+            </div>
+        </div>
+
+    </section>
+
+    <div class="home-navigation">
+        <a href="index.html" class="back-link">Kembali ke Home Cyber Hero</a>
+    </div>
+
+</main>
+
+<script>
+const questions = [
+{
+q:"Manakah pernyataan yang paling tepat tentang keamanan digital?",
+o:[
+"Cukup dengan memasang antivirus, semua risiko di dunia digital akan hilang",
+"Kebiasaan menjaga perangkat, akun, data, dan aktivitas yang perlu diterapkan terus-menerus, bukan hanya saat terjadi masalah",
+"Tanggung jawab sepenuhnya ada pada penyedia aplikasi dan layanan yang kita gunakan",
+"Hanya penting bagi orang yang menyimpan data keuangan di perangkatnya"
+],
+a:1,
+e:"Keamanan digital mencakup perangkat, akun, data, dan aktivitas, dan harus menjadi kebiasaan. Antivirus atau penyedia layanan saja tidak cukup, karena perilaku pengguna sangat menentukan."
+},
+{
+q:"Tiga prinsip dasar keamanan digital adalah jangan asal klik, jangan asal percaya, dan jangan asal membagikan informasi. Situasi manakah yang melanggar ketiganya sekaligus?",
+o:[
+"Seseorang memeriksa alamat pengirim sebuah email sebelum membukanya",
+"Seseorang mengganti password setelah mendengar kabar ada kebocoran data",
+"Seseorang menolak permintaan pertemanan dari akun yang tidak dikenal",
+"Seseorang menerima tautan hadiah dari nomor tak dikenal, mengkliknya, mempercayai isinya, lalu meneruskannya ke grup"
+],
+a:3,
+e:"Pada pilihan tersebut, tautan diklik tanpa pemeriksaan, isinya dipercaya tanpa dicek, dan diteruskan ke grup. Ketiganya melanggar prinsip keamanan digital."
+},
+{
+q:"Seorang pengguna sangat disiplin menjaga password, tetapi sering membagikan lokasi, nomor telepon, dan foto dokumen pribadi di media sosial. Kesimpulan yang paling tepat adalah...",
+o:[
+"Keamanan digital tidak cukup hanya dari satu aspek, sehingga kebiasaan membagikan informasi juga perlu dijaga",
+"Keamanan akunnya sudah terjamin karena password adalah satu-satunya pertahanan",
+"Risikonya kecil karena media sosial pasti dilindungi penyedia layanan",
+"Risikonya hanya muncul jika akunnya dibuat publik secara permanen"
+],
+a:0,
+e:"Password yang kuat tidak menutup risiko dari informasi pribadi yang terlalu terbuka. Keamanan digital menyangkut beberapa aspek sekaligus."
+},
+{
+q:"Sebuah email dikirim dari support@akun-bank-resmi.co dengan isi: “Verifikasi dalam 1 jam atau rekening Anda dibekukan!” disertai tautan pendek. Ciri phishing apa saja yang muncul?",
+o:[
+"Hanya alamat pengirim yang mencurigakan",
+"Hanya isi pesan yang mendesak dan menakut-nakuti",
+"Alamat pengirim tidak resmi, isi pesan menekan dan menakuti, serta tautan yang tidak jelas",
+"Tidak ada ciri phishing karena pesan menyebut nama bank"
+],
+a:2,
+e:"Alamat tidak resmi, isi yang mendesak, dan tautan yang tidak jelas adalah tiga ciri phishing. Menyebut nama bank tidak membuktikan pesan itu asli."
+},
+{
+q:"Mengapa pelaku phishing sering membuat pesan yang terkesan mendesak dan menakutkan?",
+o:[
+"Agar pesan terlihat lebih resmi dan profesional",
+"Agar korban panik dan bertindak cepat tanpa sempat memeriksa kebenarannya",
+"Agar pesan lolos dari filter email otomatis",
+"Agar korban bisa menghubungi pelaku dengan segera"
+],
+a:1,
+e:"Tekanan waktu dan rasa takut membuat korban tidak berpikir jernih, padahal pemeriksaan singkat bisa mengungkap penipuan."
+},
+{
+q:"Seorang teman dekat mengirim pesan: “Tolong klik link ini dong, bantu vote aku!” Kamu curiga karena gaya bahasanya berbeda dari biasanya. Tindakan paling tepat adalah...",
+o:[
+"Mengeklik tautan karena yang mengirim teman sendiri",
+"Membalas pesan itu dan menanyakan isi tautannya",
+"Meneruskan pesan ke grup untuk menanyakan pendapat teman-teman",
+"Tidak mengeklik, lalu menghubungi temanmu lewat jalur lain, misalnya telepon atau bertemu langsung, untuk memastikan"
+],
+a:3,
+e:"Akun teman bisa saja diretas. Memastikan lewat jalur lain adalah cara yang aman, sedangkan membalas atau meneruskan pesan tidak menjamin kebenarannya."
+},
+{
+q:"Kamu terlanjur mengeklik tautan dari pesan mencurigakan, tetapi belum memasukkan data apa pun di halaman yang terbuka. Langkah yang paling tepat adalah...",
+o:[
+"Segera menutup halaman, tidak mengisi data apa pun, lalu memeriksa keamanan akun dan mengganti password bila ada keraguan",
+"Mengisi sebagian data agar halaman tidak menampilkan pesan kesalahan",
+"Membiarkannya karena belum ada data yang diberikan, sehingga pasti aman",
+"Menghapus semua akun yang pernah dipakai di perangkat tersebut"
+],
+a:0,
+e:"Menutup halaman dan tidak mengisi data adalah langkah awal yang tepat. Tetap waspada dan amankan akun jika ada keraguan."
+},
+{
+q:"Manakah pilihan yang paling aman dari sisi password?",
+o:[
+"Nama sendiri, tanggal lahir, dan tanda seru di akhir",
+"Kata yang umum diganti huruf menjadi angka, misalnya P4ssw0rd!",
+"Kc#7!mP2$vX9 yang hanya dipakai untuk satu akun",
+"Password panjang yang mudah diingat tetapi dipakai di semua akun"
+],
+a:2,
+e:"Password kuat itu panjang, acak, memadukan huruf besar, huruf kecil, angka, dan simbol, serta tidak dipakai ulang."
+},
+{
+q:"Seseorang memakai satu password yang kuat untuk email, media sosial, dan akun belanja. Risiko utamanya adalah...",
+o:[
+"Password akan kedaluwarsa lebih cepat",
+"Jika salah satu layanan mengalami kebocoran, akun di layanan lain ikut rentan diambil alih",
+"Layanan akan otomatis memblokir ketiga akun tersebut",
+"Password menjadi lebih lemah setiap kali dipakai di tempat baru"
+],
+a:1,
+e:"Password yang kuat pun tidak aman bila dipakai berulang. Kebocoran di satu tempat membuka akses ke akun lain."
+},
+{
+q:"Password seorang pengguna bocor, dan pelaku mencoba masuk ke akunnya. Apa yang terjadi jika verifikasi dua langkah sudah aktif?",
+o:[
+"Pelaku langsung berhasil karena password sudah benar",
+"Akun otomatis terhapus untuk melindungi data",
+"Password lama otomatis diganti oleh sistem",
+"Pelaku masih membutuhkan verifikasi tambahan, sehingga akun jauh lebih sulit dibobol"
+],
+a:3,
+e:"Verifikasi dua langkah menambah lapisan keamanan di luar password, sehingga password yang bocor saja tidak cukup untuk masuk."
+},
+{
+q:"Manakah unggahan yang paling berisiko bagi keamanan data pribadi?",
+o:[
+"Foto kartu identitas atau kartu mahasiswa yang nomornya terbaca jelas",
+"Foto makanan yang sedang dinikmati bersama teman",
+"Foto pemandangan dari perjalanan akhir pekan",
+"Foto buku yang sedang dibaca"
+],
+a:0,
+e:"Nomor dan data pada kartu identitas dapat disalahgunakan untuk penipuan atau pencurian identitas."
+},
+{
+q:"Mengapa data yang tampak sepele seperti nama, tanggal lahir, dan asal sekolah tetap berbahaya jika dikumpulkan bersama?",
+o:[
+"Karena data tersebut tidak boleh disimpan di perangkat mana pun",
+"Karena data tersebut akan otomatis dipublikasikan oleh penyedia layanan",
+"Karena pelaku bisa menggabungkannya untuk menebak password, menipu, atau menyamar sebagai korban",
+"Karena data tersebut otomatis menjadi milik orang yang pertama melihatnya"
+],
+a:2,
+e:"Potongan informasi yang kecil bisa dirangkai menjadi profil lengkap yang dipakai untuk penipuan."
+},
+{
+q:"Sebuah aplikasi kalkulator meminta akses kontak, lokasi, dan galeri foto. Sikap yang paling tepat adalah...",
+o:[
+"Menyetujui semuanya agar aplikasi berjalan lancar",
+"Menolak izin yang tidak berkaitan dengan fungsi aplikasi, dan mempertimbangkan ulang apakah aplikasi itu layak dipakai",
+"Menyetujui, tetapi hanya sampai aplikasinya selesai dipakai",
+"Mengabaikan permintaan itu karena tidak berpengaruh pada keamanan"
+],
+a:1,
+e:"Izin yang tidak berkaitan dengan fungsi aplikasi adalah tanda perlu waspada. Prinsip Think Before You Share berlaku juga pada izin aplikasi."
+},
+{
+q:"Manakah tindakan yang termasuk cyberbullying meskipun pelakunya mengaku hanya bercanda?",
+o:[
+"Memberi komentar kritik sopan pada karya teman",
+"Mengirim stiker lucu di grup kelas",
+"Mengajak teman bergabung ke diskusi daring",
+"Mengunggah foto memalukan teman tanpa izin dengan keterangan yang mengejek"
+],
+a:3,
+e:"Niat bercanda tidak mengubah dampaknya. Konten yang mempermalukan seseorang tanpa izin adalah bentuk perundungan."
+},
+{
+q:"Mengapa menyebarkan tangkapan layar komentar kasar terhadap seseorang, walaupun tanpa menambah komentar, tetap bermasalah?",
+o:[
+"Karena memperluas jangkauan dan dapat memperparah dampak pada korban",
+"Karena melanggar hak cipta pemilik komentar",
+"Karena akan membuat akun penyebar diblokir otomatis",
+"Karena tangkapan layar tidak bisa dijadikan bukti apa pun"
+],
+a:0,
+e:"Menyebarkan konten perundungan membuat lebih banyak orang melihatnya dan menambah tekanan pada korban. Untuk keperluan melapor, tangkapan layar cukup disimpan sebagai bukti."
+},
+{
+q:"Kamu menjadi korban komentar menghina di media sosial. Urutan langkah yang paling tepat adalah...",
+o:[
+"Membalas keras, menghapus komentar, lalu menutup akun",
+"Menghapus semua bukti, mengabaikan, lalu berharap pelaku berhenti",
+"Menyimpan bukti seperti tangkapan layar, memblokir atau melaporkan akun pelaku, lalu bercerita kepada orang yang dipercaya",
+"Mengunggah balasan terbuka untuk mempermalukan pelaku"
+],
+a:2,
+e:"Menyimpan bukti, memblokir atau melaporkan, dan mencari dukungan adalah langkah yang melindungi korban. Membalas atau menghapus bukti justru merugikan."
+},
+{
+q:"Manakah informasi yang paling perlu dicurigai dan diperiksa sebelum dibagikan?",
+o:[
+"Pengumuman jadwal kuliah yang dikirim melalui kanal resmi kampus",
+"Berita berjudul provokatif seperti “VIRAL! SEMUA ORANG WAJIB TAHU!” tanpa sumber yang jelas",
+"Artikel yang mencantumkan nama penulis, tanggal, dan sumber data",
+"Siaran pers dari lembaga resmi dengan tautan yang dapat ditelusuri"
+],
+a:1,
+e:"Judul yang memancing emosi dan tidak menyertakan sumber adalah ciri informasi yang perlu diverifikasi lebih dulu."
+},
+{
+q:"Kamu menyadari telah membagikan informasi yang ternyata salah dan sudah dilihat banyak orang. Langkah yang paling bertanggung jawab adalah...",
+o:[
+"Menghapus unggahan secara diam-diam agar tidak ada yang tahu",
+"Menunggu sampai ada yang menegur baru bertindak",
+"Menambahkan keterangan bahwa informasi itu dari orang lain",
+"Menghapus atau memperbaiki unggahan, lalu menyampaikan koreksi kepada orang yang sudah melihatnya"
+],
+a:3,
+e:"Bertanggung jawab berarti memperbaiki kesalahan dan memberi tahu orang yang terlanjur menerima informasi yang salah, bukan sekadar menghapus."
+},
+{
+q:"Manakah contoh menyampaikan perbedaan pendapat secara beretika di internet?",
+o:[
+"Mengkritik argumen dengan bahasa sopan tanpa menyerang pribadi orang yang berpendapat",
+"Membalas dengan kata-kata kasar agar pendapat terlihat tegas",
+"Membuat akun anonim untuk menyerang pendapat lawan",
+"Menyebarkan data pribadi lawan bicara agar pendapatnya tidak dipercaya"
+],
+a:0,
+e:"Kritik boleh disampaikan, tetapi sasarannya adalah gagasan, bukan pribadi seseorang, dan dengan bahasa yang sopan."
+},
+{
+q:"Mengapa jejak digital perlu dipertimbangkan sebelum mengunggah sesuatu?",
+o:[
+"Karena unggahan akan otomatis terhapus dalam beberapa hari",
+"Karena hanya teman dekat yang dapat melihat unggahan kita",
+"Karena unggahan dapat tersimpan dan dilihat lagi dalam waktu lama, sehingga dapat memengaruhi reputasi diri",
+"Karena platform tidak menyimpan riwayat unggahan yang sudah dihapus"
+],
+a:2,
+e:"Unggahan bisa disalin, disimpan, atau ditangkap layar oleh orang lain, sehingga dampaknya bisa bertahan lama meski sudah dihapus."
+}
+];
+
+let currentQuestion = 0;
+let answers = Array(questions.length).fill(null);
+let submitted = false;
+
+const questionText = document.getElementById("questionText");
+const optionsContainer = document.getElementById("optionsContainer");
+const prevBtn = document.getElementById("prevBtn");
+const nextBtn = document.getElementById("nextBtn");
+
+function renderQuestion() {
+    const q = questions[currentQuestion];
+
+    document.getElementById("questionNumber").textContent =
+        `Soal ${currentQuestion + 1} dari ${questions.length}`;
+
+    document.getElementById("answeredCount").textContent =
+        `Terjawab: ${answers.filter(a => a !== null).length}/${questions.length}`;
+
+    document.getElementById("progressBar").style.width =
+        ((currentQuestion + 1) / questions.length * 100) + "%";
+
+    questionText.textContent = `${currentQuestion + 1}. ${q.q}`;
+    optionsContainer.innerHTML = "";
+
+    q.o.forEach((option, index) => {
+        const label = document.createElement("label");
+        label.className = "option";
+
+        if (answers[currentQuestion] === index) {
+            label.classList.add("selected");
+        }
+
+        const radio = document.createElement("input");
+        radio.type = "radio";
+        radio.name = "answer";
+        radio.value = index;
+        radio.checked = answers[currentQuestion] === index;
+        radio.disabled = submitted;
+
+        radio.addEventListener("change", () => {
+            answers[currentQuestion] = index;
+            renderQuestion();
+        });
+
+        const text = document.createElement("span");
+        text.textContent = String.fromCharCode(65 + index) + ". " + option;
+
+        label.appendChild(radio);
+        label.appendChild(text);
+        optionsContainer.appendChild(label);
+    });
+
+    prevBtn.disabled = currentQuestion === 0;
+
+    nextBtn.textContent =
+        currentQuestion === questions.length - 1
+        ? "Selesaikan Kuis"
+        : "Selanjutnya →";
+}
+
+function nextQuestion() {
+    if (answers[currentQuestion] === null) {
+        alert("Silakan pilih jawaban terlebih dahulu!");
+        return;
+    }
+
+    if (currentQuestion === questions.length - 1) {
+        finishQuiz();
+        return;
+    }
+
+    currentQuestion++;
+    renderQuestion();
+}
+
+function previousQuestion() {
+    if (currentQuestion > 0) {
+        currentQuestion--;
+        renderQuestion();
+    }
+}
+
+function finishQuiz() {
+    submitted = true;
+
+    const correct = answers.filter(
+        (answer, index) => answer === questions[index].a
+    ).length;
+
+    const wrong = questions.length - correct;
+    const score = Math.round((correct / questions.length) * 100);
+
+    document.getElementById("quizContent").style.display = "none";
+    document.getElementById("result").classList.add("show");
+
+    document.getElementById("finalScore").textContent = score;
+
+    document.getElementById("resultDescription").innerHTML =
+        `Kamu menjawab <strong>${correct} soal dengan benar</strong> dan
+        <strong>${wrong} soal dengan salah</strong> dari total
+        ${questions.length} soal.<br><br>` +
+        (score >= 80
+            ? "Hebat! Kamu sudah memahami materi keamanan digital dengan sangat baik."
+            : score >= 60
+            ? "Bagus! Terus tingkatkan pemahamanmu tentang keamanan digital."
+            : "Tetap semangat! Pelajari kembali materi Cyber Hero dan coba lagi.");
+}
+
+function showReview() {
+    const reviewContent = document.getElementById("reviewContent");
+    reviewContent.innerHTML = "";
+
+    questions.forEach((q, index) => {
+        const isCorrect = answers[index] === q.a;
+
+        const item = document.createElement("div");
+        item.className = "review-item";
+
+        const title = document.createElement("strong");
+        title.textContent = `Soal ${index + 1}. ${q.q}`;
+
+        const answer = document.createElement("p");
+        answer.innerHTML = isCorrect
+            ? '<span class="right">Jawaban kamu benar.</span>'
+            : '<span class="wrong-text">Jawaban kamu salah.</span>';
+
+        const selected = document.createElement("p");
+        selected.textContent =
+            "Jawaban kamu: " +
+            String.fromCharCode(65 + answers[index]) +
+            ". " + q.o[answers[index]];
+
+        const correct = document.createElement("p");
+        correct.innerHTML = "<strong>Kunci jawaban:</strong> " +
+            String.fromCharCode(65 + q.a) + ". " + q.o[q.a];
+
+        const explanation = document.createElement("p");
+        explanation.innerHTML = "<strong>Pembahasan:</strong> " + q.e;
+
+        item.append(title, answer, selected, correct, explanation);
+        reviewContent.appendChild(item);
+    });
+
+    document.getElementById("result").classList.remove("show");
+    document.getElementById("review").classList.add("show");
+}
+
+function hideReview() {
+    document.getElementById("review").classList.remove("show");
+    document.getElementById("result").classList.add("show");
+}
+
+function restartQuiz() {
+    currentQuestion = 0;
+    answers = Array(questions.length).fill(null);
+    submitted = false;
+
+    document.getElementById("result").classList.remove("show");
+    document.getElementById("review").classList.remove("show");
+    document.getElementById("quizContent").style.display = "block";
+
+    renderQuestion();
+}
+
+renderQuestion();
+</script>
+
+</body>
+</html>

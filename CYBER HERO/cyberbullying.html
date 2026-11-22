@@ -1,0 +1,641 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cyberbullying | Cyber Hero</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body {
+    width: 100%;
+    min-height: 100%;
+}
+
+body {
+    font-family: 'Poppins', Arial, sans-serif;
+    background: #f3f8fc;
+    color: #18344d;
+}
+
+/* HALAMAN UTAMA */
+.halaman-materi {
+    width: 100%;
+    height: 100vh;
+    height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow: hidden;
+
+    background:
+        radial-gradient(circle at 5% 85%, #d9f1fa 0%, transparent 28%),
+        radial-gradient(circle at 95% 15%, #e0f5fc 0%, transparent 30%),
+        #f7fafc;
+}
+
+/* HEADER */
+.header-materi {
+    width: 100%;
+    height: 65px;
+    min-height: 65px;
+    flex-shrink: 0;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background: linear-gradient(120deg, #173d5c, #087e9c);
+    box-shadow: 0 4px 15px rgba(0,45,70,0.15);
+
+    position: relative;
+    z-index: 2;
+}
+
+.header-materi h1 {
+    color: white;
+    font-size: 27px;
+    font-weight: 800;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+}
+
+.header-materi h1 span {
+    color: #48e1f0;
+}
+
+/* ORNAMEN */
+.ornamen {
+    position: absolute;
+    left: -100px;
+    bottom: -130px;
+    width: 650px;
+    height: 600px;
+    transform: rotate(-45deg);
+    pointer-events: none;
+    opacity: 0.35;
+}
+
+.ornamen span {
+    position: absolute;
+    display: block;
+    width: 130px;
+    height: 500px;
+    border-radius: 30px;
+    background: linear-gradient(90deg, #536b91, #779ab9, #d5e1eb);
+}
+
+.ornamen span:nth-child(1) {
+    left: 20px;
+    top: 50px;
+}
+
+.ornamen span:nth-child(2) {
+    left: 180px;
+    top: 180px;
+    width: 100px;
+    height: 390px;
+}
+
+.ornamen span:nth-child(3) {
+    left: 350px;
+    top: 70px;
+    width: 110px;
+    height: 450px;
+}
+
+/* KONTEN UTAMA */
+.konten-materi {
+    flex: 1;
+    min-height: 0;
+    width: 100%;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    padding: 12px 20px;
+
+    position: relative;
+    z-index: 1;
+}
+
+/* SUBJUDUL */
+.subjudul {
+    flex-shrink: 0;
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+.subjudul h2 {
+    color: #173d5c;
+    font-size: 27px;
+    font-weight: 800;
+    margin-bottom: 5px;
+}
+
+.subjudul p {
+    color: #647b8d;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+/* VIDEO DAN MATERI */
+.area-pembelajaran {
+    width: min(1250px, 96%);
+    flex: 1;
+    min-height: 0;
+
+    display: grid;
+    grid-template-columns: 1.15fr 0.85fr;
+    gap: 22px;
+    align-items: stretch;
+}
+
+/* BINGKAI VIDEO */
+.area-video {
+    width: 100%;
+    height: 100%;
+    min-height: 0;
+
+    position: relative;
+    padding: 10px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    background: white;
+    border: 1px solid #dceaf2;
+    border-radius: 16px;
+
+    box-shadow: 0 12px 35px rgba(19,74,105,0.13);
+}
+
+.area-video::before {
+    content: "";
+    position: absolute;
+    top: -4px;
+    left: 30px;
+    width: 85px;
+    height: 4px;
+    background: #24c8e5;
+    border-radius: 10px;
+}
+
+.area-video video {
+    display: block;
+    width: 100%;
+    flex: 1;
+    min-height: 0;
+
+    object-fit: contain;
+    background: #071b2c;
+    border-radius: 10px;
+}
+
+/* KETERANGAN VIDEO */
+.keterangan {
+    flex-shrink: 0;
+    color: #073B5C;
+    font-family: Arial, sans-serif;
+    font-size: 18px;
+    font-weight: 900;
+    line-height: 1.4;
+    text-align: center;
+    margin-top: 12px;
+    padding: 0 5px;
+}
+
+/* PANEL MATERI */
+.materi-box {
+    width: 100%;
+    height: 100%;
+    min-height: 0;
+    overflow-y: auto;
+
+    background: white;
+    padding: 22px 24px;
+
+    border: 1px solid #dceaf2;
+    border-radius: 16px;
+
+    box-shadow: 0 12px 35px rgba(19,74,105,0.13);
+
+    color: #38566a;
+    font-size: 13px;
+    line-height: 1.8;
+
+    scrollbar-width: thin;
+    scrollbar-color: #24b9d5 #eaf5f9;
+}
+
+.nomor-materi {
+    display: inline-block;
+    color: #087e9c;
+    background: #e1f6fb;
+    border: 1px solid #bceaf4;
+
+    padding: 5px 13px;
+    border-radius: 20px;
+
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    margin-bottom: 12px;
+}
+
+.materi-box h2 {
+    color: #173d5c;
+    font-size: 21px;
+    font-weight: 800;
+    margin-bottom: 15px;
+}
+
+.materi-box h3 {
+    color: #087e9c;
+    font-size: 15px;
+    font-weight: 700;
+    margin-top: 20px;
+    margin-bottom: 8px;
+}
+
+.materi-box p {
+    margin-bottom: 13px;
+    text-align: justify;
+}
+
+/* KOTAK POIN PENTING */
+.pesan-materi {
+    background: #eaf8fc;
+    border-left: 4px solid #24c8e5;
+    padding: 14px 17px;
+    border-radius: 10px;
+    margin: 18px 0;
+}
+
+.pesan-materi h3 {
+    margin-top: 0;
+    color: #075477;
+}
+
+.pesan-materi p {
+    color: #075477;
+    font-weight: 600;
+    margin-bottom: 8px;
+    text-align: left;
+}
+
+.pesan-materi p:last-child {
+    margin-bottom: 0;
+}
+
+/* SCROLLBAR */
+.materi-box::-webkit-scrollbar {
+    width: 7px;
+}
+
+.materi-box::-webkit-scrollbar-track {
+    background: #eaf5f9;
+    border-radius: 10px;
+}
+
+.materi-box::-webkit-scrollbar-thumb {
+    background: #24b9d5;
+    border-radius: 10px;
+}
+
+/* NAVIGASI */
+.navigasi {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    flex-shrink: 0;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    padding: 10px 5%;
+}
+
+.navigasi a {
+    min-width: 165px;
+    padding: 12px 25px;
+
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+
+    background: linear-gradient(120deg, #294d70, #087e9c);
+    color: white;
+    text-decoration: none;
+
+    border-radius: 9px;
+    font-size: 15px;
+    font-weight: 600;
+
+    box-shadow: 0 5px 14px rgba(8,79,115,0.18);
+    transition: 0.3s;
+}
+
+.navigasi a:hover {
+    background: linear-gradient(120deg, #087e9c, #16b9d5);
+    transform: translateY(-3px);
+}
+
+/* LAPTOP DENGAN LAYAR PENDEK */
+@media (max-height: 750px) and (min-width: 901px) {
+    .header-materi {
+        height: 55px;
+        min-height: 55px;
+    }
+
+    .konten-materi {
+        padding: 8px 15px;
+    }
+
+    .subjudul {
+        margin-bottom: 10px;
+    }
+
+    .subjudul h2 {
+        font-size: 23px;
+    }
+
+    .subjudul p {
+        font-size: 12px;
+    }
+
+    .area-pembelajaran {
+        gap: 18px;
+    }
+
+    .area-video {
+        padding: 8px;
+    }
+
+    .keterangan {
+        font-size: 15px;
+        margin-top: 8px;
+    }
+
+    .materi-box {
+        padding: 15px 19px;
+        font-size: 12px;
+        line-height: 1.65;
+    }
+
+    .materi-box h2 {
+        font-size: 19px;
+        margin-bottom: 10px;
+    }
+
+    .materi-box h3 {
+        margin-top: 13px;
+    }
+
+    .navigasi {
+        padding: 7px 5%;
+    }
+
+    .navigasi a {
+        padding: 9px 20px;
+        font-size: 13px;
+    }
+}
+
+/* TABLET */
+@media (max-width: 900px) {
+    .halaman-materi {
+        height: auto;
+        min-height: 100vh;
+        overflow: visible;
+    }
+
+    .konten-materi {
+        padding: 22px 15px;
+    }
+
+    .area-pembelajaran {
+        width: 100%;
+        max-width: 750px;
+        flex: initial;
+        grid-template-columns: 1fr;
+        gap: 18px;
+    }
+
+    .area-video {
+        height: auto;
+        min-height: 0;
+    }
+
+    .area-video video {
+        width: 100%;
+        aspect-ratio: 16 / 9;
+        flex: initial;
+    }
+
+    .materi-box {
+        height: 450px;
+    }
+}
+
+/* HP */
+@media (max-width: 600px) {
+    .header-materi {
+        height: 55px;
+        min-height: 55px;
+        padding: 8px;
+    }
+
+    .header-materi h1 {
+        font-size: 20px;
+        letter-spacing: 1px;
+    }
+
+    .konten-materi {
+        padding: 20px 12px;
+    }
+
+    .subjudul {
+        margin-bottom: 15px;
+    }
+
+    .subjudul h2 {
+        font-size: 20px;
+    }
+
+    .subjudul p {
+        font-size: 11px;
+    }
+
+    .area-pembelajaran {
+        width: 100%;
+        gap: 15px;
+    }
+
+    .area-video {
+        padding: 6px;
+        border-radius: 12px;
+    }
+
+    .area-video video {
+        border-radius: 8px;
+    }
+
+    .keterangan {
+        font-size: 15px;
+        margin-top: 10px;
+    }
+
+    .materi-box {
+        height: 420px;
+        padding: 18px;
+        border-radius: 12px;
+    }
+
+    .materi-box h2 {
+        font-size: 19px;
+    }
+
+    .navigasi {
+        padding: 15px;
+    }
+
+    .navigasi a {
+        min-width: 125px;
+        padding: 10px 14px;
+        font-size: 13px;
+    }
+
+    .ornamen {
+        transform: scale(0.7) rotate(-45deg);
+        transform-origin: bottom left;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<main class="halaman-materi">
+
+    <!-- HEADER -->
+    <header class="header-materi">
+        <h1>MATERI <span>CYBERBULLYING</span></h1>
+    </header>
+
+    <!-- ORNAMEN -->
+    <div class="ornamen">
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+
+    <!-- KONTEN -->
+    <section class="konten-materi">
+
+        <div class="subjudul">
+            <h2>Berani Melawan Cyberbullying!</h2>
+            <p>
+                Kenali tindakan perundungan di dunia digital,
+                pelajari cara menghadapinya, dan ciptakan lingkungan
+                internet yang aman serta saling menghargai.
+            </p>
+        </div>
+
+        <!-- VIDEO DAN MATERI -->
+        <section class="area-pembelajaran">
+
+            <!-- VIDEO CYBERBULLYING -->
+            <div class="area-video">
+
+                <video controls autoplay playsinline preload="auto">
+                    <source src="media/cyberbullying.mp4" type="video/mp4">
+                    Browser kamu tidak mendukung pemutaran video.
+                </video>
+
+                <p class="keterangan">
+                    Simak video pembelajaran sampai selesai.
+                </p>
+
+            </div>
+
+            <!-- MATERI CYBERBULLYING -->
+            <article class="materi-box">
+
+                <span class="nomor-materi">MATERI 5</span>
+
+                <h2>Cyberbullying</h2>
+
+                <p>
+                    Cyberbullying adalah tindakan perundungan yang dilakukan melalui media digital, seperti
+                    media sosial, aplikasi pesan, atau platform online lainnya. Bentuknya dapat berupa komentar
+                    negatif, penghinaan, ancaman, atau penyebaran konten yang bertujuan mempermalukan dan
+                    menyakiti orang lain.
+                </p>
+
+                <p>
+                    Jika melihat cyberbullying, jangan ikut berkomentar negatif atau menyebarkan konten yang
+                    merugikan korban. Blokir atau laporkan akun yang melakukan perundungan. Jika menjadi
+                    korban, jangan ragu meminta bantuan kepada orang yang dipercaya.
+                </p>
+
+                <p>
+                    Komentar di internet tetap dapat menyakiti perasaan orang lain. Jangan ikut merundung hanya
+                    karena orang lain melakukannya. Mari gunakan media digital untuk hal-hal yang positif dan
+                    saling menghargai.
+                </p>
+
+                <div class="pesan-materi">
+                    <h3>Dua Hal Penting</h3>
+
+                    <p>
+                        Jangan ikut merundung atau menyebarkan konten yang menyakiti.
+                    </p>
+
+                    <p>
+                        Blokir, laporkan, dan minta bantuan orang yang dipercaya.
+                    </p>
+                </div>
+
+                <h3>Contoh Dalam Kehidupan Nyata:</h3>
+
+                <p>
+                    Di grup angkatan, seorang mahasiswa menyebarkan tangkapan layar jawaban
+                    presentasi Fajar yang keliru disertai ejekan dan stiker yang merendahkan,
+                    sehingga Fajar takut presentasi dan menghindari kegiatan kelas. Hal yang
+                    awalnya dianggap bercanda dapat membuat korban tertekan dan menarik diri.
+                    Jangan ikut menyebarkan atau menertawakan, simpan bukti lalu blokir atau
+                    laporkan, sampaikan kepada dosen pembimbing akademik atau layanan konseling
+                    kampus, dan dukung serta temani teman yang menjadi korban.
+                </p>
+
+            </article>
+
+        </section>
+
+    </section>
+
+    <!-- NAVIGASI -->
+    <footer class="navigasi">
+        <a href="perlindungan-data.html">← Kembali</a>
+        <a href="etika-internet.html">Selanjutnya →</a>
+    </footer>
+
+</main>
+
+</body>
+</html>
